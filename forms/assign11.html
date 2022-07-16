@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>week8</title>
+  <link rel="stylesheet" href="Styles.css">
+</head>
+
+
+
+<body onload="attachCheckboxHandlers()">
+  <header id="header">
+    <h1>Welcome </h1>
+    <a href="../index.html">CS 213 Assignments.</a>
+  </header>
+  <hr>
+  <div class="calcForm" id="calculator">
+    <h2>JavaScript Form Validation</h2>
+   
+
+
+
+    <form action="assign11.php" method="GET" class="col" id="form" onsubmit="validateForm()">
+      <div class="row">
+        <div class="col-6">
+          <div>
+            <label for="first_name">First Name</label>
+            <input type="text" id="first_name" name="first_name" />
+            <p id="nameError"></p>
+          </div>
+          <div>
+            <label for="last_name">Last Name</label>
+            <input type="text" id="last_name" name="last_name" />
+            <p id="surnameError"></p>
+          </div>
+          <div>
+            <label>Phone</label>
+
+            <input type="text" id="phone" name="phone" oninput="validatePhone()" />
+            <p id="phoneError"></p>
+          </div>
+
+
+        </div>
+
+
+        <div class="col-6">
+          <div>
+            <label>Credit Card Number</label>
+            <input type="text" name="credit_card" id="credit_card" oninput="validateCard()" />
+            <p id="cardNumberError"></p>
+          </div>
+          <div>
+            <label>Credit Card Expiration Date</label>
+            <input type="text" name="exp_date" id="exp_date" />
+            <p id="cardExpiryDateError"></p>
+          </div>
+
+
+          <div> <label><input type="radio" name="card" value="visa">Visa</label></div>
+          <div> <label><input type="radio" name="card" value="mastercard">Mastercard</label></div>
+          <div> <label><input type="radio" name="card" value="american_express">American Express</label></div>
+
+        </div>
+      </div>
+
+      <div>
+        <label>Address</label>
+        <textarea name="address" id="address" cols="50"></textarea>
+        <p id="addressError"></p>
+      </div>
+
+      <div class="col-12">
+        <fieldset>
+          <legend>Select items you want below</legend>
+
+          <table id="items">
+
+            <tr>
+              <td>Laptop bag </td>
+              <td>$5.50</td>
+              <td><input type="checkbox" name="item_01" value="5"> </label></td>
+            </tr>
+            <tr>
+              <td>Laptop charger</td>
+              <td>$50.50</td>
+              <td><input type="checkbox" name="item_02" value="50"> </td>
+            </tr>
+            <tr>
+              <td>Hard drive</td>
+              <td>$500.00</td>
+              <td><input type="checkbox" name="item_03" value="500"> </td>
+            </tr>
+            <tr>
+              <td>Laptop</td>
+              <td>$5500.00</td>
+              <td><input type="checkbox" name="item_04" value="5500"> </td>
+            </tr>
+            <tr id="total">
+              <td>Total: $ </td>
+
+              <td> <input type="text" name="total" value="0.00" readonly="readonly" /> </td>
+              <td> </td>
+            </tr>
+          </table>
+        </fieldset>
+
+
+      </div>
+
+      <div class="row" style="margin-top:20px; float:right">
+        <input id="clear" type="reset" name="reset" value="Reset">
+        <input type="submit" name="validate" value="Submit" />
+      </div>
+
+    </form>
+
+  </div>
+  
+  <script type="text/javascript">
+    function reset() {
+      document.getElementById("first_name").focus();
+    }
+
+    function validateForm() {
+      this.validatePhone();
+      this.validateCard();
+      let firstname = document.getElementById("first_name").value;
+      let lastname = document.getElementById("last_name").value;
+      let address = document.getElementById("address").value
+      let exp = document.getElementById("exp_date").value
+      if (firstname == "" || firstname == null) {
+        document.getElementById("nameError").innerHTML = "First name not be empty";
+        document.getElementById("first_name").focus();
+        return false;
+      } else if (lastname == "" || lastname == null) {
+        document.getElementById("surnameError").innerHTML = "Last name should not be empty";
+        document.getElementById("last_name").focus();
+        return false;
+      } else if (address == "" || address == null) {
+        document.getElementById("addressError").innerHTML = "Address should not be empty";
+        document.getElementById("address").focus();
+        return false;
+      } else if (exp == "" || exp == null) {
+        document.getElementById("cardExpiryDateError").innerHTML = "Expiry date should not be empty";
+        document.getElementById("exp_date").focus();
+        return false;
+      } else
+        return true;
+    }
+
+
+
+    function validatePhone() {
+      var regex = /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/;
+      let phoneno = document.getElementById('phone').value;
+      if (phoneno.match(regex)) {
+        return true;
+      } else {
+        document.getElementById('phoneError').innerHTML = 'Not a valid phone number, please try again.'
+        document.getElementById("phone").focus();
+        return false;
+      }
+      if (document.getElementById("phone").value = "") {
+        document.getElementById('phoneError').innerHTML = 'Phone number should not be empty.'
+        document.getElementById("phone").focus();
+        return false;
+      }
+
+    }
+
+    function validateCard() {
+      var regex = /^([0-9]{4}[\s-]?){3}([0-9]{4})$/;
+      let cardno = document.getElementById('credit_card').value;
+      if (cardno.match(regex)) {
+        return true;
+      } else {
+        document.getElementById('cardNumberError').innerHTML = 'Not a valid card number, please try again.'
+        return false;
+      }
+      if (document.getElementById("credit_card").value = "") {
+        document.getElementById('cardNumberError').innerHTML = 'card number should not be empty.'
+        document.getElementById("credit_card").focus();
+        return false;
+      }
+    }
+
+    function attachCheckboxHandlers() {
+      var el = document.getElementById('items');
+      var myItems = el.getElementsByTagName('input');
+      for (var i = 0, len = myItems.length; i < len; i++) {
+        if (myItems[i].type === 'checkbox') {
+          myItems[i].onclick = updateTotal;
+        }
+      }
+    }
+
+    function updateTotal(e) {
+      var form = this.form;
+      var val = parseFloat(form.elements['total'].value);
+      if (this.checked) {
+        val += parseFloat(this.value);
+      } else {
+        val -= parseFloat(this.value);
+      }
+      form.elements['total'].value = val.toFixed(2);
+    }
+
+    document.getElementById("reset").addEventListener("click", reset);
+  </script>
+
+
+
+</body>
+
+</html>
